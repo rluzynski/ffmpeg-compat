@@ -1,0 +1,38 @@
+diff -up ffmpeg-20080113/configure.pkgconfig ffmpeg-20080113/configure
+--- ffmpeg-20080113/configure.pkgconfig	2008-01-12 13:34:55.000000000 +0100
++++ ffmpeg-20080113/configure	2008-01-13 21:03:30.000000000 +0100
+@@ -2122,7 +2122,7 @@ include=$6
+ cat <<EOF >$name.pc
+ prefix=$PREFIX
+ exec_prefix=\${prefix}
+-libdir=\${exec_prefix}/lib
++libdir=$libdir
+ includedir=\${prefix}/include
+ 
+ Name: $name
+@@ -2161,13 +2161,13 @@ EOF
+ pkgconfig_generate libavutil "FFmpeg utility library" "$lavu_version" -lavutil "" ffmpeg
+ pkgconfig_generate_uninstalled libavutil "FFmpeg utility library" "$lavu_version"
+ 
+-pkgconfig_generate libavcodec "FFmpeg codec library" "$lavc_version" "-lavcodec $extralibs" "$pkg_requires libavutil = $lavu_version" ffmpeg
++pkgconfig_generate libavcodec "FFmpeg codec library" "$lavc_version" "-lavcodec" "libavutil = $lavu_version" ffmpeg
+ pkgconfig_generate_uninstalled libavcodec "FFmpeg codec library" "$lavc_version" "$extralibs" "$pkg_requires libavutil = $lavu_version"
+ 
+-pkgconfig_generate libavformat "FFmpeg container format library" "$lavf_version" "-lavformat $extralibs" "$pkg_requires libavcodec = $lavc_version" ffmpeg
++pkgconfig_generate libavformat "FFmpeg container format library" "$lavf_version" "-lavformat" "libavcodec = $lavc_version" ffmpeg
+ pkgconfig_generate_uninstalled libavformat "FFmpeg container format library" "$lavf_version" "$extralibs" "$pkg_requires libavcodec = $lavc_version"
+ 
+-pkgconfig_generate libavdevice "FFmpeg device handling library" "$lavd_version" "-lavdevice $extralibs" "$pkg_requires libavformat = $lavf_version" ffmpeg
++pkgconfig_generate libavdevice "FFmpeg device handling library" "$lavd_version" "-lavdevice $extralibs" "libavformat = $lavf_version" ffmpeg
+ pkgconfig_generate_uninstalled libavdevice "FFmpeg device handling library" "$lavd_version" "$extralibs" "$pkg_requires libavformat = $lavf_version"
+ if enabled pp; then
+     pkgconfig_generate libpostproc "FFmpeg post processing library" "$pp_version" -lpostproc "" postproc
+@@ -2178,7 +2178,7 @@ if enabled swscaler; then
+     pkgconfig_generate libswscale "FFmpeg image rescaling library" "$sws_version" -lswscale "libavutil = $lavu_version" ffmpeg
+     pkgconfig_generate_uninstalled libswscale "FFmpeg image rescaling library" "$sws_version" "" "libavutil = $lavu_version"
+ else
+-    pkgconfig_generate libswscale "FFmpeg image rescaling library" "$sws_version" "" "$pkg_requires libavcodec = $lavc_version" ffmpeg
++    pkgconfig_generate libswscale "FFmpeg image rescaling library" "$sws_version" "" "libavcodec = $lavc_version" ffmpeg
+     pkgconfig_generate_uninstalled libswscale "FFmpeg image rescaling library" "$sws_version" "" "$pkg_requires libavcodec = $lavc_version"
+     apply libswscale.pc sed s/^Libs:.*$/Libs:/
+     apply libswscale-uninstalled.pc sed s/^Libs:.*$/Libs:/

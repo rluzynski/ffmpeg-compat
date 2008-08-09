@@ -1,0 +1,109 @@
+diff -up ffmpeg-20080113/Makefile.ffmpeg-suffix ffmpeg-20080113/Makefile
+--- ffmpeg-20080113/Makefile.ffmpeg-suffix	2008-01-13 20:46:17.000000000 +0100
++++ ffmpeg-20080113/Makefile	2008-02-11 16:44:04.000000000 +0100
+@@ -50,7 +50,7 @@ HOOKS-$(HAVE_FORK)      += ppm
+ HOOKS-$(HAVE_IMLIB2)    += imlib2
+ HOOKS-$(HAVE_FREETYPE2) += drawtext
+ 
+-HOOKS = $(addprefix vhook/, $(addsuffix $(SLIBSUF), $(BASEHOOKS) $(HOOKS-yes)))
++HOOKS = $(addprefix vhook$(BUILDSUF)/, $(addsuffix $(SLIBSUF), $(BASEHOOKS) $(HOOKS-yes)))
+ 
+ VHOOKCFLAGS-$(HAVE_IMLIB2) += `imlib2-config --cflags`
+ LIBS_imlib2$(SLIBSUF)       = `imlib2-config --libs`
+@@ -122,7 +122,7 @@ ffmpeg.o ffplay.o ffserver.o: version.h
+ 
+ videohook: .libs $(HOOKS)
+ 
+-vhook/%$(SLIBSUF): vhook/%.o
++vhook$(BUILDSUF)/%$(SLIBSUF): vhook/%.o
+ 	$(CC) $(LDFLAGS) -o $@ $(VHOOKSHFLAGS) $< $(VHOOKLIBS) $(LIBS_$(@F))
+ 
+ vhook/%.o: vhook/%.c
+@@ -163,8 +163,8 @@ install-man:
+ 	install -m 644 $(MANPAGES) "$(MANDIR)/man1"
+ 
+ install-vhook: videohook
+-	install -d "$(SHLIBDIR)/vhook"
+-	install -m 755 $(HOOKS) "$(SHLIBDIR)/vhook"
++	install -d "$(SHLIBDIR)/vhook$(BUILDSUF)"
++	install -m 755 $(HOOKS) "$(SHLIBDIR)/vhook$(BUILDSUF)"
+ 
+ install-libs:
+ 	$(MAKE) -C libavutil   install-libs
+@@ -202,7 +202,7 @@ uninstall-man:
+ 
+ uninstall-vhook:
+ 	rm -f $(addprefix "$(SHLIBDIR)/",$(ALLHOOKS_SRCS:.c=$(SLIBSUF)))
+-	-rmdir "$(SHLIBDIR)/vhook/"
++	-rmdir "$(SHLIBDIR)/vhook$(BUILDSUF)/"
+ 
+ uninstall-libs:
+ 	$(MAKE) -C libavutil   uninstall-libs
+diff -up ffmpeg-20080113/configure.ffmpeg-suffix ffmpeg-20080113/configure
+--- ffmpeg-20080113/configure.ffmpeg-suffix	2008-02-11 16:44:04.000000000 +0100
++++ ffmpeg-20080113/configure	2008-02-11 16:44:04.000000000 +0100
+@@ -2158,27 +2158,27 @@ Cflags: -I\${includedir}
+ EOF
+ }
+ 
+-pkgconfig_generate libavutil "FFmpeg utility library" "$lavu_version" -lavutil "" ffmpeg
++pkgconfig_generate libavutil${BUILDSUF} "FFmpeg utility library" "$lavu_version" -lavutil${BUILDSUF} "" ffmpeg${BUILDSUF}
+ pkgconfig_generate_uninstalled libavutil "FFmpeg utility library" "$lavu_version"
+ 
+-pkgconfig_generate libavcodec "FFmpeg codec library" "$lavc_version" "-lavcodec" "libavutil = $lavu_version" ffmpeg
++pkgconfig_generate libavcodec${BUILDSUF} "FFmpeg codec library" "$lavc_version" "-lavcodec${BUILDSUF}" "libavutil${BUILDSUF} = $lavu_version" ffmpeg${BUILDSUF}
+ pkgconfig_generate_uninstalled libavcodec "FFmpeg codec library" "$lavc_version" "$extralibs" "$pkg_requires libavutil = $lavu_version"
+ 
+-pkgconfig_generate libavformat "FFmpeg container format library" "$lavf_version" "-lavformat" "libavcodec = $lavc_version" ffmpeg
++pkgconfig_generate libavformat${BUILDSUF} "FFmpeg container format library" "$lavf_version" "-lavformat${BUILDSUF}" "libavcodec${BUILDSUF} = $lavc_version" ffmpeg${BUILDSUF}
+ pkgconfig_generate_uninstalled libavformat "FFmpeg container format library" "$lavf_version" "$extralibs" "$pkg_requires libavcodec = $lavc_version"
+ 
+-pkgconfig_generate libavdevice "FFmpeg device handling library" "$lavd_version" "-lavdevice $extralibs" "libavformat = $lavf_version" ffmpeg
++pkgconfig_generate libavdevice${BUILDSUF} "FFmpeg device handling library" "$lavd_version" "-lavdevice${BUILDSUF} $extralibs" "libavformat${BUILDSUF} = $lavf_version" ffmpeg${BUILDSUF}
+ pkgconfig_generate_uninstalled libavdevice "FFmpeg device handling library" "$lavd_version" "$extralibs" "$pkg_requires libavformat = $lavf_version"
+ if enabled pp; then
+-    pkgconfig_generate libpostproc "FFmpeg post processing library" "$pp_version" -lpostproc "" postproc
++    pkgconfig_generate libpostproc${BUILDSUF} "FFmpeg post processing library" "$pp_version" -lpostproc${BUILDSUF} "" postproc${BUILDSUF}
+     pkgconfig_generate_uninstalled libpostproc "FFmpeg post processing library" "$pp_version"
+ fi
+ 
+ if enabled swscaler; then
+-    pkgconfig_generate libswscale "FFmpeg image rescaling library" "$sws_version" -lswscale "libavutil = $lavu_version" ffmpeg
++    pkgconfig_generate libswscale${BUILDSUF} "FFmpeg image rescaling library" "$sws_version" -lswscale${BUILDSUF} "libavutil${BUILDSUF} = $lavu_version" ffmpeg${BUILDSUF}
+     pkgconfig_generate_uninstalled libswscale "FFmpeg image rescaling library" "$sws_version" "" "libavutil = $lavu_version"
+ else
+-    pkgconfig_generate libswscale "FFmpeg image rescaling library" "$sws_version" "" "libavcodec = $lavc_version" ffmpeg
++    pkgconfig_generate libswscale${BUILDSUF} "FFmpeg image rescaling library" "$sws_version" "" "libavcodec${BUILDSUF} = $lavc_version" ffmpeg${BUILDSUF}
+     pkgconfig_generate_uninstalled libswscale "FFmpeg image rescaling library" "$sws_version" "" "$pkg_requires libavcodec = $lavc_version"
+     apply libswscale.pc sed s/^Libs:.*$/Libs:/
+     apply libswscale-uninstalled.pc sed s/^Libs:.*$/Libs:/
+diff -up ffmpeg-20080113/common.mak.ffmpeg-suffix ffmpeg-20080113/common.mak
+--- ffmpeg-20080113/common.mak.ffmpeg-suffix	2007-12-06 00:15:24.000000000 +0100
++++ ffmpeg-20080113/common.mak	2008-02-11 16:44:04.000000000 +0100
+@@ -83,7 +83,7 @@ install-headers:
+ 	install -d "$(INCDIR)"
+ 	install -d "$(LIBDIR)/pkgconfig"
+ 	install -m 644 $(addprefix $(SRC_DIR)/,$(HEADERS)) "$(INCDIR)"
+-	install -m 644 $(BUILD_ROOT)/lib$(NAME).pc "$(LIBDIR)/pkgconfig"
++	install -m 644 $(BUILD_ROOT)/lib$(NAME)$(BUILDSUF).pc "$(LIBDIR)/pkgconfig"
+ 
+ uninstall: uninstall-libs uninstall-headers
+ 
+diff -up ffmpeg-20080113/libpostproc/Makefile.ffmpeg-suffix ffmpeg-20080113/libpostproc/Makefile
+--- ffmpeg-20080113/libpostproc/Makefile.ffmpeg-suffix	2007-10-30 08:54:18.000000000 +0100
++++ ffmpeg-20080113/libpostproc/Makefile	2008-02-11 16:44:04.000000000 +0100
+@@ -2,7 +2,7 @@
+ include ../config.mak
+ 
+ # Overload incdir, postproc include files go in a different directory.
+-INCDIR=$(prefix)/include/postproc
++INCDIR=$(prefix)/include/postproc$(BUILDSUF)
+ 
+ EXTRALIBS := -L$(BUILD_ROOT)/libavutil -lavutil$(BUILDSUF) $(EXTRALIBS)
+ 
+@@ -23,4 +23,4 @@ postprocess_pic.o: postprocess.c
+ 	$(CC) -c $(CFLAGS) -fomit-frame-pointer -fPIC -DPIC -o $@ $<
+ 
+ uninstall-headers::
+-	-rmdir "$(prefix)/include/postproc"
++	-rmdir "$(prefix)/include/postproc$(BUILDSUF)"
