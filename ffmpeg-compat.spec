@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -185,10 +185,9 @@ if ! [ %{name} == ffmpeg ] ; then
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/%{name}/pkgconfig
 for s in $RPM_BUILD_ROOT/%{_libdir}/*.so ; do 
   ffmpegsym=`basename ${s}`
-  ffmpegpath=`readlink ${s}`
-  ffmpeglib=`basename ${ffmpegpath}`
+  ffmpeglib=`readlink ${s}`
   echo "Symlink $ffmpeglib"
-  ln -fs ../${ffmepglib} \
+  ln -fs ../${ffmpeglib} \
     $RPM_BUILD_ROOT%{_libdir}/%{name}/${ffmpegsym}
 done
 rm -rf $RPM_BUILD_ROOT/%{_libdir}/*.so
@@ -228,6 +227,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu May 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.6.5-3
+- Fix typo on readlink
+
 * Sat Apr 14 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.6.5-2
 - Move headers .pc and data to a ffmpeg-compat directory.
 - Update arm options
