@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -64,7 +64,6 @@ Summary:        Development package for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       pkgconfig
-Provides:       ffmpeg-devel = %{version}-%{release}
 
 %description    devel
 FFmpeg is a complete and free Internet live audio and video
@@ -227,6 +226,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed May 30 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.6.5-4
+- Drop Provides for ffmpeg-devel
+
 * Thu May 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.6.5-3
 - Fix typo on readlink
 
