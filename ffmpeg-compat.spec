@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.6
-Release:        5%{?dist}
+Release:        6%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -20,6 +20,7 @@ Group:          Applications/Multimedia
 URL:            http://ffmpeg.org/
 Source0:        http://ffmpeg.org/releases/ffmpeg-%{version}.tar.bz2
 Source1:        ffmpeg-snapshot.sh
+Patch0:         ffmpeg-0.6.6-compile-fix.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  bzip2-devel
@@ -113,6 +114,7 @@ This package contains development files for %{name}
 
 %prep
 %setup -q -n ffmpeg-%{version}
+%patch0 -p1
 
 %build
 mkdir generic
@@ -226,6 +228,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun May  5 2013 Hans de Goede <j.w.r.degoede@gmail.com> - 0.6.6-6
+- Rebuilt for x264 0.130
+
 * Sun Jan 20 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-5
 - Rebuilt for FFmpeg/x264
 
