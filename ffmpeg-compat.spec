@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.6
-Release:        6%{?dist}
+Release:        7%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -37,6 +37,7 @@ BuildRequires:  libvorbis-devel
 %{?_with_vpx:BuildRequires:  libvpx-devel >= 0.9.1}
 %{?_with_amr:BuildRequires: opencore-amr-devel vo-amrwbenc-devel}
 BuildRequires:  openjpeg-devel
+BuildRequires:  perl(Pod::Man)
 BuildRequires:  schroedinger-devel
 BuildRequires:  SDL-devel
 BuildRequires:  speex-devel
@@ -228,6 +229,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat May 25 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-7
+- Add BR for perl(Pod::Man)
+
 * Sun May  5 2013 Hans de Goede <j.w.r.degoede@gmail.com> - 0.6.6-6
 - Rebuilt for x264 0.130
 
