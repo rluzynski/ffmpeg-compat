@@ -2,15 +2,15 @@
 
 #global svn     20110110
 
-%if 0%{?rhel}
-#Disable vaapi on RHEL until the next libva
+%if 0%{?fedora}
+#Disable vaapi on Fedora - only usefull for gst-vaapi on RHEL
 %global _without_vaapi 1
 %endif
 
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.6
-Release:        7%{?dist}
+Release:        8%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -229,6 +229,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jun 27 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-8
+- Drop support for VAAPI on fedora
+
 * Sat May 25 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-7
 - Add BR for perl(Pod::Man)
 
