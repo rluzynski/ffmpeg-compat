@@ -1,0 +1,39 @@
+From 514e8af6f39493cc4f2b7996da9117b438e5939b Mon Sep 17 00:00:00 2001
+From: Nicolas Chauvet <kwizart@gmail.com>
+Date: Sat, 29 Jun 2013 14:12:59 +0200
+Subject: [PATCH] Fix build when seletected fpu is not neon on arm
+
+---
+ libavcodec/arm/h264dsp_init_arm.c  |    4 +++-
+ libavcodec/arm/h264pred_init_arm.c |    4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/libavcodec/arm/h264dsp_init_arm.c b/libavcodec/arm/h264dsp_init_arm.c
+index c06c3d0..7014d1a 100644
+--- a/libavcodec/arm/h264dsp_init_arm.c
++++ b/libavcodec/arm/h264dsp_init_arm.c
+@@ -122,5 +122,7 @@ static void ff_h264dsp_init_neon(H264DSPContext *c)
+ 
+ void ff_h264dsp_init_arm(H264DSPContext *c)
+ {
+-    if (HAVE_NEON) ff_h264dsp_init_neon(c);
++#if HAVE_NEON
++    ff_h264dsp_init_neon(c);
++#endif
+ }
+diff --git a/libavcodec/arm/h264pred_init_arm.c b/libavcodec/arm/h264pred_init_arm.c
+index a7d9960..8574ff0 100644
+--- a/libavcodec/arm/h264pred_init_arm.c
++++ b/libavcodec/arm/h264pred_init_arm.c
+@@ -72,5 +72,7 @@ static void ff_h264_pred_init_neon(H264PredContext *h, int codec_id)
+ 
+ void ff_h264_pred_init_arm(H264PredContext *h, int codec_id)
+ {
+-    if (HAVE_NEON)    ff_h264_pred_init_neon(h, codec_id);
++#if HAVE_NEON
++    ff_h264_pred_init_neon(h, codec_id);
++#endif
+ }
+-- 
+1.7.1
+
