@@ -22,6 +22,7 @@ Source0:        http://ffmpeg.org/releases/ffmpeg-%{version}.tar.bz2
 Source1:        ffmpeg-snapshot.sh
 Patch0:         ffmpeg-0.6.6-compile-fix.patch
 Patch1:         0001-Fix-build-when-seletected-fpu-is-not-neon-on-arm.patch
+Patch2:         0002-Add-unconditional-return-statement-to-yuva420_rgb32_.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  bzip2-devel
@@ -118,6 +119,7 @@ This package contains development files for %{name}
 %setup -q -n ffmpeg-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 mkdir generic
