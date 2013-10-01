@@ -1,0 +1,11 @@
+diff -up ffmpeg-0.6.6/libavcodec/vaapi_mpeg4.c~ ffmpeg-0.6.6/libavcodec/vaapi_mpeg4.c
+--- ffmpeg-0.6.6/libavcodec/vaapi_mpeg4.c~	2012-06-09 22:09:09.000000000 +0200
++++ ffmpeg-0.6.6/libavcodec/vaapi_mpeg4.c	2013-05-05 20:34:05.537171756 +0200
+@@ -21,6 +21,7 @@
+  */
+ 
+ #include "vaapi_internal.h"
++#include "h263.h"
+ 
+ /** Reconstruct bitstream intra_dc_vlc_thr */
+ static int mpeg4_get_intra_dc_vlc_thr(MpegEncContext *s)
