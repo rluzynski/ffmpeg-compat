@@ -1,0 +1,49 @@
+From 78ddf390a520f333d800de6d00a7726fd846c830 Mon Sep 17 00:00:00 2001
+From: Diego Biurrun <diego@biurrun.de>
+Date: Sun, 10 Apr 2011 21:12:08 +0200
+Subject: [PATCH 2/2] Add unconditional return statement to
+ yuva420_rgb32_MMX() / yuva420_bgr32_MMX().
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+When HAVE_7REGS was not defined these functions had an empty body
+causing the following warnings during compilation.
+In file included from libswscale/x86/yuv2rgb_mmx.c:58:
+libswscale/x86/yuv2rgb_template.c: In function ‘yuva420_rgb32_MMX’:
+libswscale/x86/yuv2rgb_template.c:412: warning: no return statement in function returning non-void
+libswscale/x86/yuv2rgb_template.c: In function ‘yuva420_bgr32_MMX’:
+libswscale/x86/yuv2rgb_template.c:457: warning: no return statement in function returning non-void
+
+Signed-off-by: Diego Biurrun <diego@biurrun.de>
+
+Conflicts:
+	libswscale/x86/yuv2rgb_template.c
+---
+ libswscale/x86/yuv2rgb_template.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/libswscale/x86/yuv2rgb_template.c b/libswscale/x86/yuv2rgb_template.c
+index ba90689..6016923 100644
+--- a/libswscale/x86/yuv2rgb_template.c
++++ b/libswscale/x86/yuv2rgb_template.c
+@@ -524,6 +524,8 @@ static inline int RENAME(yuva420_rgb32)(SwsContext *c, const uint8_t* src[], int
+ 
+     YUV2RGB_ENDLOOP(4)
+     YUV2RGB_OPERANDS_ALPHA
++#else
++    return 0;
+ #endif
+ }
+ 
+@@ -560,5 +562,7 @@ static inline int RENAME(yuva420_bgr32)(SwsContext *c, const uint8_t* src[], int
+ 
+     YUV2RGB_ENDLOOP(4)
+     YUV2RGB_OPERANDS_ALPHA
++#else
++    return 0;
+ #endif
+ }
+-- 
+1.7.11.7
+
