@@ -2,8 +2,8 @@
 
 #global svn     20110110
 
-%if 0%{?rhel}
-#Disable vaapi on RHEL until the next libva
+%if 0%{?fedora}
+#Disable vaapi on Fedora - only usefull for gst-vaapi on RHEL
 %global _without_vaapi 1
 %endif
 
@@ -20,6 +20,9 @@ Group:          Applications/Multimedia
 URL:            http://ffmpeg.org/
 Source0:        http://ffmpeg.org/releases/ffmpeg-%{version}.tar.bz2
 Source1:        ffmpeg-snapshot.sh
+Patch0:         ffmpeg-0.6.6-compile-fix.patch
+Patch1:         0001-Fix-build-when-seletected-fpu-is-not-neon-on-arm.patch
+Patch2:         0002-Add-unconditional-return-statement-to-yuva420_rgb32_.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  bzip2-devel
@@ -36,6 +39,7 @@ BuildRequires:  libvorbis-devel
 %{?_with_vpx:BuildRequires:  libvpx-devel >= 0.9.1}
 %{?_with_amr:BuildRequires: opencore-amr-devel vo-amrwbenc-devel}
 BuildRequires:  openjpeg-devel
+BuildRequires:  perl(Pod::Man)
 BuildRequires:  schroedinger-devel
 BuildRequires:  SDL-devel
 BuildRequires:  speex-devel
@@ -113,6 +117,9 @@ This package contains development files for %{name}
 
 %prep
 %setup -q -n ffmpeg-%{version}
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 mkdir generic
@@ -228,6 +235,33 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Tue Oct 01 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.7-1
 - Update to 0.6.7
+
+* Sat Jul 20 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-10
+- Rebuilt for x264
+
+* Sat Jun 29 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-9
+- Fix build on non-neon arm
+
+* Thu Jun 27 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-8
+- Drop support for VAAPI on fedora
+
+* Sat May 25 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-7
+- Add BR for perl(Pod::Man)
+
+* Sun May  5 2013 Hans de Goede <j.w.r.degoede@gmail.com> - 0.6.6-6
+- Rebuilt for x264 0.130
+
+* Sun Jan 20 2013 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-5
+- Rebuilt for FFmpeg/x264
+
+* Fri Nov 23 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-4
+- Rebuilt for x264
+
+* Wed Sep 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-3
+- Rebuilt for x264 ABI 125
+
+* Sun Jun 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-2
+- Rebuilt for x264
 
 * Wed Jun 13 2012 Nicolas Chauvet <kwizart@gmail.com> - 0.6.6-1
 - Update to 0.6.6
