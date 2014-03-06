@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.7
-Release:        4%{?dist}
+Release:        5%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -233,6 +233,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 06 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.6.7-5
+- Rebuilt for x264
+
 * Tue Jan 07 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.6.7-4
 - Rebuilt for librtmp
 
