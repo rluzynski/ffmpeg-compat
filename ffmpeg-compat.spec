@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.7
-Release:        6%{?dist}
+Release:        7%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -233,6 +233,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 01 2014 Sérgio Basto <sergio@serjux.com> - 0.6.7-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Sat Mar 22 2014 Sérgio Basto <sergio@serjux.com> - 0.6.7-6
 - Rebuilt for x264
 
