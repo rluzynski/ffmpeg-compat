@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.7
-Release:        7%{?dist}
+Release:        8%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -23,6 +23,7 @@ Source1:        ffmpeg-snapshot.sh
 Patch0:         ffmpeg-0.6.6-compile-fix.patch
 Patch1:         0001-Fix-build-when-seletected-fpu-is-not-neon-on-arm.patch
 Patch2:         0002-Add-unconditional-return-statement-to-yuva420_rgb32_.patch
+Patch3:         ffmpeg-arm-fix.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  bzip2-devel
@@ -120,6 +121,7 @@ This package contains development files for %{name}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p0
 
 %build
 mkdir generic
@@ -233,6 +235,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Nov 24 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.6.7-8
+- Add patch for arm - reported by Tobias Brodel
+
 * Mon Sep 01 2014 Sérgio Basto <sergio@serjux.com> - 0.6.7-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 

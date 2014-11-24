@@ -1,0 +1,22 @@
+--- libavcodec/arm/jrevdct_arm.S	2014-11-24 14:20:06.352682781 +1100
++++ libavcodec/arm/jrevdct_arm.S	2014-11-24 13:26:48.930757553 +1100
+@@ -61,7 +61,7 @@
+         stmdb   sp!, { r4 - r12, lr }   @ all callee saved regs
+ 
+         sub sp, sp, #4                  @ reserve some space on the stack
+-        str r0, [ sp ]                  @ save the DCT pointer to the stack
++        str r0, [sp]                  @ save the DCT pointer to the stack
+ 
+         mov lr, r0                      @ lr = pointer to the current row
+         mov r12, #8                     @ r12 = row-counter
+@@ -211,7 +211,7 @@
+ 
+ start_column_loop:
+         @ Start of column loop
+-        ldr lr, [ sp ]
++        ldr lr, [sp]
+         mov r12, #8
+ column_loop:
+         ldrsh r0, [lr, #( 0*8)]             @ r0 = 'd0'
+
+
