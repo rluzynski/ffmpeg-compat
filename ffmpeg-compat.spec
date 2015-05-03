@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.7
-Release:        8%{?dist}
+Release:        9%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -79,6 +79,7 @@ This package contains development files for %{name}
 
 %global ff_configure \
 ../configure \\\
+    --disable-doc \\\
     --prefix=%{_prefix} \\\
     --bindir=%{_bindir} \\\
     --datadir=%{_datadir}/%{name} \\\
@@ -235,6 +236,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun May 03 2015 Nicolas Chauvet <kwizart@gmail.com> - 0.6.7-9
+- Disable doc - rfbz#3616
+
 * Mon Nov 24 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.6.7-8
 - Add patch for arm - reported by Tobias Brodel
 
