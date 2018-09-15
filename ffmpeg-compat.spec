@@ -10,7 +10,7 @@
 Summary:        Digital VCR and streaming server
 Name:           ffmpeg-compat
 Version:        0.6.7
-Release:        11%{?dist}
+Release:        12%{?dist}
 %if 0%{?_with_amr:1}
 License:        GPLv3+
 %else
@@ -52,6 +52,7 @@ BuildRequires:  zlib-devel
 %ifarch %{ix86} x86_64
 BuildRequires:  yasm
 %endif
+BuildRequires:  gcc-c++
 
 %description
 FFmpeg is a complete and free Internet live audio and video
@@ -236,6 +237,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Sep 15 2018 Rafal Luzynski <digitalfreak@lingonborough.com> - 0.6.7-12
+- Added "BuildRequires: gcc-c++"
+- Rebuilt for Fedora 28
+
 * Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 0.6.7-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
